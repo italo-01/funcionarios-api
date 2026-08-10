@@ -1,5 +1,6 @@
 package com.italo.funcionarios_api.service;
 
+import com.italo.funcionarios_api.dto.DadosCadastroFuncionario;
 import com.italo.funcionarios_api.model.Funcionario;
 import com.italo.funcionarios_api.repository.FuncionarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +15,8 @@ public class FuncionarioService {
         this.funcionarioRepository = funcionarioRepository;
     }
 
-    public void cadastrarFuncionario(Funcionario funcionario){
+    public void cadastrarFuncionario(DadosCadastroFuncionario dados) {
+        Funcionario funcionario = new Funcionario(dados);
         funcionarioRepository.save(funcionario);
     }
 }
