@@ -1,5 +1,6 @@
 package com.italo.funcionarios_api.model;
 
+import com.italo.funcionarios_api.dto.DadosCadastroFuncionario;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -24,4 +25,13 @@ public class Funcionario {
     private LocalDate dataNascimento;
     private boolean ativo;
     private BigDecimal salario;
+
+    public Funcionario(DadosCadastroFuncionario dados) {
+        this.nome = dados.nome();
+        this.cargo = dados.cargo();
+        this.dataNascimento = dados.dataNascimento();
+        this.salario = dados.salario();
+        this.ativo = true;
+    }
 }
+
