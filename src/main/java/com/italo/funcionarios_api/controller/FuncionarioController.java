@@ -54,4 +54,12 @@ public class FuncionarioController {
         return ResponseEntity.ok(new DadosDetalhamentoFuncionario(funcionario));
 
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deletarFuncionario(@PathVariable long id ){
+
+        funcionarioService.deletarFuncionario(id);
+
+        return ResponseEntity.noContent().build();
+    }
 }

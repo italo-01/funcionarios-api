@@ -7,6 +7,7 @@ import com.italo.funcionarios_api.model.Funcionario;
 import com.italo.funcionarios_api.repository.FuncionarioRepository;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -54,4 +55,10 @@ public class FuncionarioService {
         return funcionario;
     }
 
+    @Transactional
+    public void deletarFuncionario(Long id) {
+
+        funcionarioRepository.deleteById(id);
+
+    }
 }
