@@ -1,7 +1,10 @@
 package com.italo.funcionarios_api.controller;
 
+import com.italo.funcionarios_api.dto.DadosAtualizarFuncionario;
 import com.italo.funcionarios_api.dto.DadosCadastroFuncionario;
+import com.italo.funcionarios_api.dto.DadosDetalhamentoFuncionario;
 import com.italo.funcionarios_api.dto.DadosListagemFuncionario;
+import com.italo.funcionarios_api.repository.FuncionarioRepository;
 import com.italo.funcionarios_api.service.FuncionarioService;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
@@ -10,6 +13,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
+import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
 
 @RestController
 @RequestMapping("/funcionario")
@@ -27,10 +32,16 @@ public class FuncionarioController {
         funcionarioService.cadastrarFuncionario(dados);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
+
     @GetMapping
     public ResponseEntity<List<DadosListagemFuncionario>> listar(){
         var funcionarios = funcionarioService.listarFuncionarios();
         return ResponseEntity.ok(funcionarios);
-        
+    }
+
+    @PutMapping
+    @Transactional
+    public ResponseEntity<DadosDetalhamentoFuncionario> atualizarFuncionario(@RequestBody @Valid DadosAtualizarFuncionario dados) {
+        funcionarioService.atualizarFuncionario(dados);
     }
 }

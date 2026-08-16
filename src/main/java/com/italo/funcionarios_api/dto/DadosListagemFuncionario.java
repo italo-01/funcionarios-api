@@ -10,7 +10,7 @@ public record DadosListagemFuncionario(
     String nome,
     String cargo,
     LocalDate dataNascimento,
-    boolean ativo,
+    Boolean ativo,
     BigDecimal salario
 ) {
     public DadosListagemFuncionario(Funcionario funcionario) {
