@@ -11,6 +11,8 @@ import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriBuilder;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.List;
 
@@ -27,21 +29,29 @@ public class FuncionarioController {
     }
 
     @PostMapping
-    @Transactional
-    public ResponseEntity<Void> cadastrarFuncionario(@RequestBody @Valid DadosCadastroFuncionario dados) {
-        funcionarioService.cadastrarFuncionario(dados);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+    public ResponseEntity<DadosDetalhamentoFuncionario> cadastrarFuncionario(@RequestBody @Valid DadosCadastroFuncionario dados, UriComponentsBuilder uribuilder) {
+
+        var funcionario = funcionarioService.cadastrarFuncionario(dados);
+
+        var uri = uribuilder.path("/funcionario/{id}").buildAndExpand(funcionario.getId()).toUri();
+
+        return ResponseEntity.created(uri).body(new DadosDetalhamentoFuncionario(funcionario));
     }
 
     @GetMapping
     public ResponseEntity<List<DadosListagemFuncionario>> listar(){
+
         var funcionarios = funcionarioService.listarFuncionarios();
+
         return ResponseEntity.ok(funcionarios);
     }
 
     @PutMapping
-    @Transactional
     public ResponseEntity<DadosDetalhamentoFuncionario> atualizarFuncionario(@RequestBody @Valid DadosAtualizarFuncionario dados) {
-        funcionarioService.atualizarFuncionario(dados);
+
+        var funcionario = funcionarioService.atualizarFuncionario(dados);
+
+        return ResponseEntity.ok(new DadosDetalhamentoFuncionario(funcionario));
+
     }
 }

@@ -5,8 +5,8 @@ import com.italo.funcionarios_api.dto.DadosCadastroFuncionario;
 import com.italo.funcionarios_api.dto.DadosListagemFuncionario;
 import com.italo.funcionarios_api.model.Funcionario;
 import com.italo.funcionarios_api.repository.FuncionarioRepository;
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,17 +20,23 @@ public class FuncionarioService {
         this.funcionarioRepository = funcionarioRepository;
     }
 
-    public void cadastrarFuncionario(DadosCadastroFuncionario dados) {
-        var funcionario = new Funcionario(dados);
-        funcionarioRepository.save(funcionario);
-    }
+    @Transactional
+    public Funcionario cadastrarFuncionario(DadosCadastroFuncionario dados) {
 
+        var funcionario = new Funcionario(dados);
+
+        funcionarioRepository.save(funcionario);
+
+        return funcionario;
+    }
+    @Transactional
     public List<DadosListagemFuncionario> listarFuncionarios() {
         var funcionarios = funcionarioRepository.findAll();
         return funcionarios.stream().map(DadosListagemFuncionario::new).toList();
     }
 
-    public void atualizarFuncionario(@Valid DadosAtualizarFuncionario dados) {
+    @Transactional
+    public Funcionario atualizarFuncionario(@Valid DadosAtualizarFuncionario dados) {
 
         var funcionario = funcionarioRepository.getReferenceById(dados.id());
 
@@ -45,7 +51,7 @@ public class FuncionarioService {
         if (dados.salario() != null) {
             funcionario.setSalario(dados.salario());
         }
-
+        return funcionario;
     }
 
 }
