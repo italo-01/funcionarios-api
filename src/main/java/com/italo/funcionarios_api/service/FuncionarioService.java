@@ -5,8 +5,10 @@ import com.italo.funcionarios_api.dto.DadosCadastroFuncionario;
 import com.italo.funcionarios_api.dto.DadosListagemFuncionario;
 import com.italo.funcionarios_api.model.Funcionario;
 import com.italo.funcionarios_api.repository.FuncionarioRepository;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Null;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -57,8 +59,13 @@ public class FuncionarioService {
 
     @Transactional
     public void deletarFuncionario(Long id) {
+        var funcionario = funcionarioRepository.findById(id);
 
-        funcionarioRepository.deleteById(id);
+        if( funcionario.isPresent()){
+            funcionarioRepository.deleteById(id);
+        }
+        throw new EntityNotFoundException();
+
 
     }
 }
