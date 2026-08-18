@@ -72,9 +72,17 @@ public class FuncionarioService {
     public void desativarFuncionario(Long id) {
 
         var funcionario = funcionarioRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException());
+                .orElseThrow(EntityNotFoundException::new);
 
         funcionario.setAtivo(false);
 
+    }
+    @Transactional
+    public void ativarFuncionario(Long id) {
+
+        var funcionario = funcionarioRepository.findById(id)
+                .orElseThrow(EntityNotFoundException::new);
+
+        funcionario.setAtivo(true);
     }
 }

@@ -12,8 +12,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.List;
 
-import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
-
 @RestController
 @RequestMapping("/funcionario")
 
@@ -67,4 +65,11 @@ public class FuncionarioController {
         return ResponseEntity.noContent().build();
     }
 
+    @PutMapping("ativar/{id}")
+    public ResponseEntity <Void> ativarRemedio(@PathVariable long id) {
+
+        funcionarioService.ativarFuncionario(id);
+
+        return ResponseEntity.noContent().build();
+    }
 }
