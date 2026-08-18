@@ -4,14 +4,10 @@ import com.italo.funcionarios_api.dto.DadosAtualizarFuncionario;
 import com.italo.funcionarios_api.dto.DadosCadastroFuncionario;
 import com.italo.funcionarios_api.dto.DadosDetalhamentoFuncionario;
 import com.italo.funcionarios_api.dto.DadosListagemFuncionario;
-import com.italo.funcionarios_api.repository.FuncionarioRepository;
 import com.italo.funcionarios_api.service.FuncionarioService;
-import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.util.UriBuilder;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.List;
@@ -62,4 +58,13 @@ public class FuncionarioController {
 
         return ResponseEntity.noContent().build();
     }
+
+    @DeleteMapping("desativar/{id}")
+    public ResponseEntity <Void> desativarRemedio(@PathVariable long id){
+
+        funcionarioService.desativarFuncionario(id);
+
+        return ResponseEntity.noContent().build();
+    }
+
 }

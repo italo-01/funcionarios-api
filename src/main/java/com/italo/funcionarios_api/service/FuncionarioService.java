@@ -9,7 +9,6 @@ import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 
 @Service
@@ -57,13 +56,25 @@ public class FuncionarioService {
 
     @Transactional
     public void deletarFuncionario(Long id) {
+
         var funcionario = funcionarioRepository.findById(id);
 
         if( funcionario.isPresent()){
             funcionarioRepository.deleteById(id);
         }
-        throw new EntityNotFoundException();
+        else {
+            throw new EntityNotFoundException();
+        }
 
+    }
+
+    @Transactional
+    public void desativarFuncionario(Long id) {
+
+        var funcionario = funcionarioRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException());
+
+        funcionario.setAtivo(false);
 
     }
 }
