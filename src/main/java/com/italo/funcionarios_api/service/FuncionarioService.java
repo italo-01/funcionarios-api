@@ -33,8 +33,8 @@ public class FuncionarioService {
     public List<DadosListagemFuncionario> listarFuncionarios(Boolean ativos) {
         var funcionarios = switch (ativos) {
             case null -> funcionarioRepository.findAll();
-            case true -> funcionarioRepository.findByAtivoTrue();
-            case false -> funcionarioRepository.findByAtivoFalse();
+            case Boolean b when b  -> funcionarioRepository.findByAtivoTrue();
+            case Boolean b -> funcionarioRepository.findByAtivoFalse();
         };
         return funcionarios.stream().map(DadosListagemFuncionario::new).toList();
     }
