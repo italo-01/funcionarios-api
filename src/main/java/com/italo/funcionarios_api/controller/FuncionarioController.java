@@ -33,9 +33,9 @@ public class FuncionarioController {
     }
 
     @GetMapping
-    public ResponseEntity<List<DadosListagemFuncionario>> listar(){
+    public ResponseEntity<List<DadosListagemFuncionario>> listar(@RequestParam(required = false) Boolean ativos){
 
-        var funcionarios = funcionarioService.listarFuncionarios();
+        var funcionarios = funcionarioService.listarFuncionarios(ativos);
 
         return ResponseEntity.ok(funcionarios);
     }
@@ -58,7 +58,7 @@ public class FuncionarioController {
     }
 
     @DeleteMapping("desativar/{id}")
-    public ResponseEntity <Void> desativarRemedio(@PathVariable long id){
+    public ResponseEntity <Void> desativarfuncionario(@PathVariable long id){
 
         funcionarioService.desativarFuncionario(id);
 
@@ -66,7 +66,7 @@ public class FuncionarioController {
     }
 
     @PutMapping("ativar/{id}")
-    public ResponseEntity <Void> ativarRemedio(@PathVariable long id) {
+    public ResponseEntity <Void> ativarFuncionario(@PathVariable long id) {
 
         funcionarioService.ativarFuncionario(id);
 

@@ -30,8 +30,12 @@ public class FuncionarioService {
         return funcionario;
     }
     @Transactional
-    public List<DadosListagemFuncionario> listarFuncionarios() {
-        var funcionarios = funcionarioRepository.findAll();
+    public List<DadosListagemFuncionario> listarFuncionarios(Boolean ativos) {
+        var funcionarios = switch (ativos) {
+            case null -> funcionarioRepository.findAll();
+            case true -> funcionarioRepository.findByAtivoTrue();
+            case false -> funcionarioRepository.findByAtivoFalse();
+        };
         return funcionarios.stream().map(DadosListagemFuncionario::new).toList();
     }
 
