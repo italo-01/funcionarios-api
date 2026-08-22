@@ -25,3 +25,11 @@ replay_pid*
 
 # Environment variables
 .env.local
+
+# IntelliJ IDEA
+.idea/
+*.iml
+out/
+
+# Maven
+target/
