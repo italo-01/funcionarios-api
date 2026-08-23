@@ -1,5 +1,4 @@
 package com.italo.funcionarios_api.service;
-
 import com.italo.funcionarios_api.dto.DadosAtualizarFuncionario;
 import com.italo.funcionarios_api.dto.DadosCadastroFuncionario;
 import com.italo.funcionarios_api.dto.DadosListagemFuncionario;
@@ -42,7 +41,8 @@ public class FuncionarioService {
     @Transactional
     public Funcionario atualizarFuncionario(@Valid DadosAtualizarFuncionario dados) {
 
-        var funcionario = funcionarioRepository.getReferenceById(dados.id());
+        var funcionario = funcionarioRepository.findById(dados.id())
+                .orElseThrow(EntityNotFoundException::new);
 
         if (dados.nome() != null) {
             funcionario.setNome(dados.nome());
@@ -61,15 +61,10 @@ public class FuncionarioService {
     @Transactional
     public void deletarFuncionario(Long id) {
 
-        var funcionario = funcionarioRepository.findById(id);
+        funcionarioRepository.findById(id)
+                .orElseThrow(EntityNotFoundException::new);
 
-        if( funcionario.isPresent()){
-            funcionarioRepository.deleteById(id);
-        }
-        else {
-            throw new EntityNotFoundException();
-        }
-
+        funcionarioRepository.deleteById(id);
     }
 
     @Transactional
@@ -80,7 +75,8 @@ public class FuncionarioService {
 
         funcionario.setAtivo(false);
 
-    }
+        }
+
     @Transactional
     public void ativarFuncionario(Long id) {
 
