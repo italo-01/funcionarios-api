@@ -1,6 +1,7 @@
 package com.italo.funcionarios_api.service;
 
 import com.italo.funcionarios_api.dto.DadosCadastroFuncionario;
+import com.italo.funcionarios_api.dto.DadosListagemFuncionario;
 import com.italo.funcionarios_api.model.Funcionario;
 import com.italo.funcionarios_api.repository.FuncionarioRepository;
 import org.junit.jupiter.api.DisplayName;
@@ -11,9 +12,11 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class FuncionarioServiceTest {
@@ -47,11 +50,57 @@ class FuncionarioServiceTest {
     }
 
     @Test
-    void listarFuncionarios() {
+    @DisplayName("should call findAll when ativos parameter is null")
+    void listarFuncionariosFindAll() {
+        Funcionario funcionario1 = new Funcionario(1L, "Italo", "Dev",
+                LocalDate.of(1999, 10, 10), true, new BigDecimal("1000.00"));
+        Funcionario funcionario2 = new Funcionario(2L, "Maria", "QA",
+                LocalDate.of(1995, 5, 5), false, new BigDecimal("1200.00"));
+
+        when(funcionarioRepository.findAll()).thenReturn(List.of(funcionario1, funcionario2));
+
+        List<DadosListagemFuncionario> resultado = funcionarioService.listarFuncionarios(null);
+
+        assertThat(resultado).hasSize(2);
+        verify(funcionarioRepository).findAll();
+        verify(funcionarioRepository, never()).findByAtivoTrue();
+        verify(funcionarioRepository, never()).findByAtivoFalse();
     }
 
     @Test
-    void atualizarFuncionario() {
+    @DisplayName("should call findByAtivoFalse when ativos parameter is false")
+    void listarFuncionariosFindByAtivoFalse() {
+        Funcionario funcionario1 = new Funcionario(1L, "Italo", "Dev",
+                LocalDate.of(1999, 10, 10), false, new BigDecimal("1000.00"));
+        Funcionario funcionario2 = new Funcionario(2L, "Maria", "QA",
+                LocalDate.of(1995, 5, 5), false, new BigDecimal("1200.00"));
+
+        when(funcionarioRepository.findByAtivoFalse()).thenReturn(List.of(funcionario1, funcionario2));
+
+        List<DadosListagemFuncionario> resultado = funcionarioService.listarFuncionarios(false);
+
+        assertThat(resultado).hasSize(2);
+        verify(funcionarioRepository).findByAtivoFalse();
+        verify(funcionarioRepository, never()).findAll();
+        verify(funcionarioRepository, never()).findByAtivoTrue();
+    }
+
+    @Test
+    @DisplayName("should call findByAtivoTrue when ativos parameter is true")
+    void listarFuncionariosFindByAtivoTrue() {
+        Funcionario funcionario1 = new Funcionario(1L, "Italo", "Dev",
+                LocalDate.of(1999, 10, 10), true, new BigDecimal("1000.00"));
+        Funcionario funcionario2 = new Funcionario(2L, "Maria", "QA",
+                LocalDate.of(1995, 5, 5), true, new BigDecimal("1200.00"));
+
+        when(funcionarioRepository.findByAtivoTrue()).thenReturn(List.of(funcionario1, funcionario2));
+
+        List<DadosListagemFuncionario> resultado = funcionarioService.listarFuncionarios(true);
+
+        assertThat(resultado).hasSize(2);
+        verify(funcionarioRepository, never()).findAll();
+        verify(funcionarioRepository).findByAtivoTrue();
+        verify(funcionarioRepository, never()).findByAtivoFalse();
     }
 
     @Test
