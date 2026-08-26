@@ -4,6 +4,7 @@ import com.italo.funcionarios_api.dto.DadosCadastroFuncionario;
 import com.italo.funcionarios_api.dto.DadosListagemFuncionario;
 import com.italo.funcionarios_api.model.Funcionario;
 import com.italo.funcionarios_api.repository.FuncionarioRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -15,6 +16,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -104,7 +106,27 @@ class FuncionarioServiceTest {
     }
 
     @Test
+    @DisplayName("should delete funcionario successfully when id exists")
     void deletarFuncionario() {
+            Long id = 1L;
+            when(funcionarioRepository.existsById(id)).thenReturn(true);
+
+            funcionarioService.deletarFuncionario(id);
+
+            verify(funcionarioRepository).deleteById(id);
+    }
+
+    @Test
+    void deletarFuncionariocase2(){
+        Long id = 99L;
+        when(funcionarioRepository.existsById(id)).thenReturn(false);
+
+        assertThatThrownBy(() -> funcionarioService.deletarFuncionario(any()))
+                .isInstanceOf(EntityNotFoundException.class)
+                .hasMessage("Funcionário não encontrado");
+
+        verify(funcionarioRepository, never()).deleteById(any());
+
     }
 
     @Test
