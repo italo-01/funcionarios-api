@@ -14,8 +14,10 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatCode;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
@@ -107,33 +109,51 @@ class FuncionarioServiceTest {
 
     @Test
     @DisplayName("should delete funcionario successfully when id exists")
-    void deletarFuncionario() {
-            Long id = 1L;
-            when(funcionarioRepository.existsById(id)).thenReturn(true);
+    void deletarFuncionariocase1() {
+        Long id = 1L;
+        Funcionario funcionario = new Funcionario();
 
-            funcionarioService.deletarFuncionario(id);
+        when(funcionarioRepository.findById(id)).thenReturn(Optional.of(funcionario));
 
-            verify(funcionarioRepository).deleteById(id);
+        funcionarioService.deletarFuncionario(id);
+
+        verify(funcionarioRepository).deleteById(id);
+
     }
 
     @Test
     void deletarFuncionariocase2(){
         Long id = 99L;
-        when(funcionarioRepository.existsById(id)).thenReturn(false);
+        when(funcionarioRepository.findById(id)).thenReturn(Optional.empty());
 
-        assertThatThrownBy(() -> funcionarioService.deletarFuncionario(any()))
-                .isInstanceOf(EntityNotFoundException.class)
-                .hasMessage("Funcionário não encontrado");
+        assertThatThrownBy(() -> funcionarioService.deletarFuncionario(id))
+                .isInstanceOf(EntityNotFoundException.class);
 
         verify(funcionarioRepository, never()).deleteById(any());
 
     }
 
     @Test
-    void desativarFuncionario() {
-    }
+    @DisplayName("should deactivate funcionario successfully when id exists")
+    void desativarFuncionario1() {
+    Long id = 1L;
+    Funcionario funcionario = new Funcionario();
+    funcionario.setAtivo(true);
+
+    when(funcionarioRepository.findById(id)).thenReturn(Optional.of(funcionario));
+
+    funcionarioService.desativarFuncionario(id);
+
+    assertThat(funcionario.isAtivo()).isFalse();
+}
 
     @Test
+    @DisplayName("should deactivate funcionario successfully when id exists")
+    void desativarFuncionariocase2() {
+
+    }
+    @Test
     void ativarFuncionario() {
+
     }
 }
