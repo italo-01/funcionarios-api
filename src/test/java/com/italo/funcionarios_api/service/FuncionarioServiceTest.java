@@ -151,9 +151,34 @@ class FuncionarioServiceTest {
     @DisplayName("should deactivate funcionario successfully when id exists")
     void desativarFuncionariocase2() {
 
+        Long id = 99L;
+        when(funcionarioRepository.findById(id)).thenReturn(Optional.empty());
+
+        assertThatThrownBy(() -> funcionarioService.desativarFuncionario(id))
+            .isInstanceOf(EntityNotFoundException.class);
+
     }
     @Test
-    void ativarFuncionario() {
+    @DisplayName("should activate funcionario successfully when id exists")
+    void ativarFuncionariocase1(){
+        Long id = 1L;
+        Funcionario funcionario = new Funcionario();
+        funcionario.setAtivo(false);
+
+        when(funcionarioRepository.findById(id)).thenReturn(Optional.of(funcionario));
+
+        funcionarioService.ativarFuncionario(id);
+
+        assertThat(funcionario.isAtivo()).isTrue();
+    }
+    @Test
+    @DisplayName("should throw exception when trying to activate a non-existing funcionario")
+    void ativarFuncionariocase2(){
+        Long id = 99L;
+        when(funcionarioRepository.findById(id)).thenReturn(Optional.empty());
+
+        assertThatThrownBy(() -> funcionarioService.desativarFuncionario(id))
+                .isInstanceOf(EntityNotFoundException.class);
 
     }
 }
