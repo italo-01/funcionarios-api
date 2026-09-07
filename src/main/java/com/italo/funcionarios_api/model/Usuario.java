@@ -1,5 +1,6 @@
 package com.italo.funcionarios_api.model;
 
+import com.italo.funcionarios_api.dto.DadosCadastroUsuario;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -29,6 +30,10 @@ public class Usuario implements UserDetails {
     @Column(nullable = false)
     private String senha;
 
+    public Usuario(DadosCadastroUsuario dados){
+        this.login = dados.nome();
+        this.senha = dados.Senha();
+    }
     // Métodos exigidos pela interface UserDetails do Spring Security
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

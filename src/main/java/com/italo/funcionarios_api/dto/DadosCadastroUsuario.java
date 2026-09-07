@@ -2,10 +2,12 @@ package com.italo.funcionarios_api.dto;
 
 import jakarta.validation.constraints.NotBlank;
 
-public class DadosCadastroUsuario {
+public record DadosCadastroUsuario(
     @NotBlank
-    String login;
+    String nome,
 
-    @NotBlank
-    String senha;
+    String Senha
+
+    ){
+
 }
