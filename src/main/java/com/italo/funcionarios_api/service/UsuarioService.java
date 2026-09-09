@@ -8,16 +8,12 @@ public class UsuarioService {
 
     private final UsuarioRepository usuarioRepository;
 
-    public UsuarioService(UsuarioRepository usuarioRepository){
+    public UsuarioService(UsuarioRepository usuarioRepository) {
         this.usuarioRepository = usuarioRepository;
     }
-    public Usuario cadastrarUsuario(DadosCadastroUsuario dados){
-
-        var usuario = new Usuario(dados);
-
-        usuarioRepository.save(usuario);
-
-        return usuario;
+    public Usuario cadastarUsuario(DadosCadastroUsuario dados){
+        var user = new Usuario(dados);
+        usuarioRepository.save(user);
+        return user;
     }
-
 }
