@@ -11,6 +11,7 @@ public class UsuarioService {
     public UsuarioService(UsuarioRepository usuarioRepository) {
         this.usuarioRepository = usuarioRepository;
     }
+
     public Usuario cadastarUsuario(DadosCadastroUsuario dados){
         var user = new Usuario(dados);
         usuarioRepository.save(user);
