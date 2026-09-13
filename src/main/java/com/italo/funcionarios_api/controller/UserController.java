@@ -19,7 +19,7 @@ public class UserController {
 
     public ResponseEntity<Void> cadastrarUsuario(DadosCadastroUsuario dados){
 
-        var user = usuarioService.cadastarUsuario(dados);
+        var user = usuarioService.cadastrarUsuario(dados);
         return ResponseEntity.status(201).build();
 
     }
