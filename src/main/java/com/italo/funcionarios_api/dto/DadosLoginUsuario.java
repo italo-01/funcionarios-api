@@ -6,5 +6,6 @@ public record DadosLoginUsuario (
     @NotBlank
     String login,
 
+    @NotBlank
     String Senha){
 }

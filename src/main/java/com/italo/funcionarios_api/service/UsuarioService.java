@@ -5,8 +5,6 @@ import com.italo.funcionarios_api.model.Usuario;
 import com.italo.funcionarios_api.repository.UsuarioRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import java.net.PasswordAuthentication;
-
 public class UsuarioService {
 
     private final UsuarioRepository usuarioRepository;
