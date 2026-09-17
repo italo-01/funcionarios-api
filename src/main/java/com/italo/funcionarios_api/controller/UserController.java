@@ -34,7 +34,7 @@ public class UserController {
     }
     @PostMapping("/login")
     public ResponseEntity<Void> loginFuncioanrio (@RequestBody @Valid DadosLoginUsuario dados){
-         var autentication = new UsernamePasswordAuthenticationToken(dados.Senha(), dados.login());
+         var autentication = new UsernamePasswordAuthenticationToken(dados.login(), dados.Senha());
 
          authenticationManager.authenticate(autentication);
 
