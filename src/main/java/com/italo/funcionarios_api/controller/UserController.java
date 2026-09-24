@@ -4,6 +4,7 @@ import com.italo.funcionarios_api.dto.DadosCadastroUsuario;
 import com.italo.funcionarios_api.dto.DadosLoginUsuario;
 import com.italo.funcionarios_api.model.Usuario;
 import com.italo.funcionarios_api.security.SecuriyConfig;
+import com.italo.funcionarios_api.service.TokenService;
 import com.italo.funcionarios_api.service.UsuarioService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -17,10 +18,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/usuario")
 public class UserController {
 
+    private final TokenService tokenService;
     private final AuthenticationManager authenticationManager;
     private final UsuarioService usuarioService;
 
-    public UserController (AuthenticationManager authenticationManager, UsuarioService usuarioService){
+    public UserController (AuthenticationManager authenticationManager, UsuarioService usuarioService, TokenService tokenService){
+        this.tokenService = tokenService;
         this.authenticationManager = authenticationManager;
         this.usuarioService = usuarioService;
     }
@@ -33,11 +36,11 @@ public class UserController {
 
     }
     @PostMapping("/login")
-    public ResponseEntity<Void> loginFuncioanrio (@RequestBody @Valid DadosLoginUsuario dados){
+    public ResponseEntity<?> loginFuncioanrio (@RequestBody @Valid DadosLoginUsuario dados){
          var autentication = new UsernamePasswordAuthenticationToken(dados.login(), dados.Senha());
 
-         authenticationManager.authenticate(autentication);
+         var autenticacao = authenticationManager.authenticate(autentication);
 
-         return ResponseEntity.ok().build();
+         return ResponseEntity.ok(tokenService.gerarToken((Usuario) autenticacao.getPrincipal()));
     }
 }

@@ -4,7 +4,9 @@ import com.italo.funcionarios_api.dto.DadosCadastroUsuario;
 import com.italo.funcionarios_api.model.Usuario;
 import com.italo.funcionarios_api.repository.UsuarioRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
 
+@Service
 public class UsuarioService {
 
     private final UsuarioRepository usuarioRepository;

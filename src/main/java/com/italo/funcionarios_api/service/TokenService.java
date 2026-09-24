@@ -15,7 +15,7 @@ import java.time.ZoneOffset;
 public class TokenService {
     public String gerarToken(Usuario usuario){
         try {
-            var algorithm = Algorithm.HMAC256(secret);
+            var algorithm = Algorithm.HMAC256("12345");
             return JWT.create()
                     .withIssuer("funcionario-api")
                     .withSubject(usuario.getLogin())
