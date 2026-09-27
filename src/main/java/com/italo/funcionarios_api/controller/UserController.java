@@ -2,8 +2,8 @@ package com.italo.funcionarios_api.controller;
 
 import com.italo.funcionarios_api.dto.DadosCadastroUsuario;
 import com.italo.funcionarios_api.dto.DadosLoginUsuario;
+import com.italo.funcionarios_api.dto.DadosTokenJwt;
 import com.italo.funcionarios_api.model.Usuario;
-import com.italo.funcionarios_api.security.SecuriyConfig;
 import com.italo.funcionarios_api.service.TokenService;
 import com.italo.funcionarios_api.service.UsuarioService;
 import jakarta.validation.Valid;
@@ -14,6 +14,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Map;
+import java.util.Objects;
+
 @RestController
 @RequestMapping("/usuario")
 public class UserController {
@@ -29,18 +33,20 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> cadastrarUsuario(@RequestBody @Valid DadosCadastroUsuario dados){
+    public ResponseEntity<?> cadastrarUsuario(@RequestBody @Valid DadosCadastroUsuario dados){
 
         usuarioService.cadastrarUsuario(dados);
-        return ResponseEntity.status(201).build();
+        return ResponseEntity.status(201).body(Map.of("Mensagem", "cadastrado com sucesso"));
 
     }
     @PostMapping("/login")
     public ResponseEntity<?> loginFuncioanrio (@RequestBody @Valid DadosLoginUsuario dados){
-         var autentication = new UsernamePasswordAuthenticationToken(dados.login(), dados.Senha());
+         var login = new UsernamePasswordAuthenticationToken(dados.login(), dados.Senha());
 
-         var autenticacao = authenticationManager.authenticate(autentication);
+         var autenticacao = authenticationManager.authenticate(login);
 
-         return ResponseEntity.ok(tokenService.gerarToken((Usuario) autenticacao.getPrincipal()));
+        var tokemJWT = tokenService.gerarToken((Usuario) Objects.requireNonNull(autenticacao.getPrincipal()));
+
+         return ResponseEntity.ok(new DadosTokenJwt(tokemJWT));
     }
 }
