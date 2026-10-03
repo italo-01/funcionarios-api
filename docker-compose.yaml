@@ -1,0 +1,30 @@
+services:
+  postgres-db:
+    image: postgres:17-alpine
+    container_name: funcionarios-db
+    restart: always
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  api:
+    image: italo001/funcionarios-api:v1
+    container_name: funcionarios-api
+    restart: always
+    depends_on:
+      - postgres-db
+    ports:
+      - "8080:8080"
+    environment:
+      DB_URL: jdbc:postgresql://postgres-db:5432/${POSTGRES_DB}
+      DB_USER: ${POSTGRES_USER}
+      DB_PASSWORD: ${POSTGRES_PASSWORD}
+      JWT_SECRET: chave_secreta_super_segura_para_token_jwt_123456
+
+volumes:
+  pgdata:
