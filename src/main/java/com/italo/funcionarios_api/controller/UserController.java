@@ -32,7 +32,7 @@ public class UserController {
         this.usuarioService = usuarioService;
     }
 
-    @PostMapping
+    @PostMapping("/cadastro")
     public ResponseEntity<?> cadastrarUsuario(@RequestBody @Valid DadosCadastroUsuario dados){
 
         usuarioService.cadastrarUsuario(dados);

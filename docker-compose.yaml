@@ -14,6 +14,7 @@ services:
 
   api:
     image: italo001/funcionarios-api:v1
+    build: .
     container_name: funcionarios-api
     restart: always
     depends_on:
