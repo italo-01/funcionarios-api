@@ -6,6 +6,8 @@ import com.italo.funcionarios_api.dto.DadosTokenJwt;
 import com.italo.funcionarios_api.model.Usuario;
 import com.italo.funcionarios_api.service.TokenService;
 import com.italo.funcionarios_api.service.UsuarioService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -20,6 +22,7 @@ import java.util.Objects;
 
 @RestController
 @RequestMapping("/usuario")
+@Tag(name = "Cadastro é login", description = "Cadastro e Autenticação de Usuario.")
 public class UserController {
 
     private final TokenService tokenService;
@@ -33,6 +36,7 @@ public class UserController {
     }
 
     @PostMapping("/cadastro")
+    @Operation(summary = "Cadastra Usuario",description = "Faz o cadstro de Usuario para o gerenciamento do sitema e retorna um token JWt")
     public ResponseEntity<?> cadastrarUsuario(@RequestBody @Valid DadosCadastroUsuario dados){
 
         usuarioService.cadastrarUsuario(dados);
@@ -40,6 +44,7 @@ public class UserController {
 
     }
     @PostMapping("/login")
+    @Operation(summary = "Login do Usuario",description = "Faz a autenticação do usuario e retorna um token JWT")
     public ResponseEntity<?> loginFuncioanrio (@RequestBody @Valid DadosLoginUsuario dados){
          var login = new UsernamePasswordAuthenticationToken(dados.login(), dados.Senha());
 

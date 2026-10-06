@@ -12,8 +12,8 @@ public class SwaggerConfiguration {
     public OpenAPI customOpenAPI(){
 
         return new OpenAPI().info(new Info()
-                .title("REMEDIOS")
-                .version("1.0.0")
+                .title("FUNCIONARIOS")
+                .version("3.0.2")
                 .description("Documentação do Cadastro-funcionario API")
         );
 
